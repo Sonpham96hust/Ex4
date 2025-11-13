@@ -15,9 +15,7 @@ function Footer({todos, filter, filters}){
 						href="#" onclick ="dispatch('switchFilter', '${type}')">${type[0].toUpperCase() + type.slice(1)}</a>
 						</li>
 						`
-					)}
-					
-					
+					)}					
 				</ul>
 				${todos.filter(filters.completed).length >0 && html 
 					`<button class="clear-completed" onclick ="dispatch('clearCompleted')">Clear completed</button>

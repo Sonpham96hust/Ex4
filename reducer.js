@@ -86,8 +86,55 @@ export default function reducer(state = init, action, args) {
         }      
 
         case 'startEdit':{
+          const [index] = args;
             state.editIndex = index;
+            return{
+              ...state,
+              editIndex: index
+            }
         }
+        case 'endEdit':{
+          const [newTitle] = args; // Lấy giá trị mới từ input
+          const newTodos = [...state.todos];
+
+    if (state.editIndex !== null) {
+        // Cập nhật title của todo đang edit
+        if(newTitle)
+        {
+          newTodos[state.editIndex] = {
+            ...newTodos[state.editIndex],
+            title: newTitle
+        };
+
+        storage.set(newTodos); // Lưu vào localStorage
+
+        return {
+            ...state,
+            todos: newTodos,
+            editIndex: null // reset editIndex sau khi edit xong
+        };
+        }
+        else{
+            const newtodo = [...state.todos];
+            newtodo.splice(state.editIndex,1);
+            storage.set(newtodo)
+            return{
+              ...state,
+              todos: newtodo,
+              editIndex: null
+            }
+        }
+        
+    }
+
+    return state;
+  }
+      case 'cancelEdit':{
+          return{
+            ...state,
+            editIndex: null
+          }
+      }    
         default:
             return state;
     }
